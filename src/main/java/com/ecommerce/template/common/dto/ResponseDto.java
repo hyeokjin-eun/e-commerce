@@ -2,6 +2,7 @@ package com.ecommerce.template.common.dto;
 
 import com.ecommerce.template.common.enums.ResponseCode;
 import lombok.Getter;
+import org.springframework.http.ResponseEntity;
 
 @Getter
 public class ResponseDto<T> {
@@ -22,8 +23,12 @@ public class ResponseDto<T> {
         return new ResponseDto<T>(code.getCode(), code.getMessage(), data);
     }
 
-    public static <T> ResponseDto<T> success(T data) {
-        return create(ResponseCode.SUCCESS, data);
+    public static <T> ResponseEntity<ResponseDto<T>> success(T data) {
+        return ResponseEntity.ok(create(ResponseCode.SUCCESS, data));
+    }
+
+    public static <T> ResponseDto<T> created(T data) {
+        return create(ResponseCode.CREATED, data);
     }
 
     public static <T> ResponseDto<T> success() {

@@ -10,12 +10,15 @@ import lombok.*;
 @NoArgsConstructor
 public class UserCreateResponse {
 
+    private Long seq;
+
     private String id;
 
     private String name;
 
     public static UserCreateResponse from(User user) {
         return UserCreateResponse.builder()
+                .seq(user.getSeq())
                 .id(user.getId())
                 .name(user.getName())
                 .build();

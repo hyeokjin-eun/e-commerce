@@ -11,7 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 class TemplateApplicationTests {
 
     @Test
-    void contextLoads() {
+    void ContextLoads_테스트() {
     }
 
 }

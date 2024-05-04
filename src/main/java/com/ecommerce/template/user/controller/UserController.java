@@ -5,10 +5,9 @@ import com.ecommerce.template.user.dto.UserCreateRequest;
 import com.ecommerce.template.user.dto.UserCreateResponse;
 import com.ecommerce.template.user.facade.UserFacade;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/users")
@@ -18,7 +17,8 @@ public class UserController {
     private final UserFacade userFacade;
 
     @PostMapping
-    public ResponseDto<UserCreateResponse> create(
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<ResponseDto<UserCreateResponse>> create(
             @RequestBody UserCreateRequest userCreateRequest
     ) {
         return ResponseDto.success(

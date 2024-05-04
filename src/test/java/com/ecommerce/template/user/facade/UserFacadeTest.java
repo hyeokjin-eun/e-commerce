@@ -17,7 +17,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-@DisplayName("사용자_파사드_비즈니스_로직_테스트")
+@DisplayName("사용자_파사드_테스트")
 public class UserFacadeTest {
 
     @Mock
