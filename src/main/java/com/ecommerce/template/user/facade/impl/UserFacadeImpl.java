@@ -2,6 +2,7 @@ package com.ecommerce.template.user.facade.impl;
 
 import com.ecommerce.template.common.utils.PasswordUtil;
 import com.ecommerce.template.common.utils.TimeUtil;
+import com.ecommerce.template.user.domain.UserSearch;
 import com.ecommerce.template.user.facade.UserFacade;
 import com.ecommerce.template.user.domain.User;
 import com.ecommerce.template.user.domain.UserCreate;
@@ -20,8 +21,13 @@ public class UserFacadeImpl implements UserFacade {
     private final TimeUtil timeUtil;
 
     @Override
-    public User create(UserCreate userCreate) {
+    public User create(UserCreate userCreate) throws Exception {
         User user = User.create(userCreate, passwordUtil, timeUtil);
         return userService.create(user);
+    }
+
+    @Override
+    public UserSearch search(UserSearch userSearch) throws Exception {
+        return null;
     }
 }

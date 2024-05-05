@@ -1,4 +1,4 @@
-package com.ecommerce.template.user.dto;
+package com.ecommerce.template.user.dto.request;
 
 import com.ecommerce.template.user.domain.UserCreate;
 import lombok.*;

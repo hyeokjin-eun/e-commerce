@@ -2,6 +2,7 @@ package com.ecommerce.template.common.dto;
 
 import com.ecommerce.template.common.enums.ResponseCode;
 import lombok.Getter;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 @Getter
@@ -13,29 +14,42 @@ public class ResponseDto<T> {
 
     private final T data;
 
-    public ResponseDto(String code, String message, T data) {
+    private ResponseDto(String code, String message, T data) {
         this.code = code;
         this.message = message;
         this.data = data;
     }
 
-    public static <T> ResponseDto<T> create(ResponseCode code, T data) {
-        return new ResponseDto<T>(code.getCode(), code.getMessage(), data);
+    private static <T> ResponseDto<T> generateResponseDto(String code, String message, T data) {
+        return new ResponseDto<>(code, message, data);
+    }
+
+    private static <T> ResponseEntity<ResponseDto<T>> generate(HttpStatus status, String code, String message, T data) {
+        return ResponseEntity.status(status)
+                .body(generateResponseDto(code, message, data));
+    }
+
+    private static <T> ResponseEntity<ResponseDto<T>> generate(ResponseCode responseCode, T data) {
+        return generate(responseCode.getStatus(), responseCode.getCode(), responseCode.getMessage(), data);
+    }
+
+    public static <T> ResponseEntity<ResponseDto<T>> created(T data) {
+        return generate(ResponseCode.CREATED, data);
     }
 
     public static <T> ResponseEntity<ResponseDto<T>> success(T data) {
-        return ResponseEntity.ok(create(ResponseCode.SUCCESS, data));
+        return generate(ResponseCode.SUCCESS, data);
     }
 
-    public static <T> ResponseDto<T> created(T data) {
-        return create(ResponseCode.CREATED, data);
+    public static <T> ResponseEntity<ResponseDto<T>> success() {
+        return success(null);
     }
 
-    public static <T> ResponseDto<T> success() {
-        return create(ResponseCode.SUCCESS, null);
+    public static <T> ResponseEntity<ResponseDto<T>> error() {
+        return generate(ResponseCode.ERROR, null);
     }
 
-    public static <T> ResponseDto<T> error(ResponseCode code) {
-        return create(code, null);
+    public static <T> ResponseEntity<ResponseDto<T>> error(ResponseCode responseCode) {
+        return generate(responseCode, null);
     }
 }

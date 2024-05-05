@@ -33,7 +33,7 @@ public class UserFacadeTest {
     private UserFacadeImpl userFacade;
 
     @Test
-    public void 사용자를_등록한다() {
+    public void 사용자를_등록한다() throws Exception {
         // given
         UserCreate userCreate = UserCreate.builder()
                 .id("test")

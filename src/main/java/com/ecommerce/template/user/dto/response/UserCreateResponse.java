@@ -1,6 +1,7 @@
-package com.ecommerce.template.user.dto;
+package com.ecommerce.template.user.dto.response;
 
 import com.ecommerce.template.user.domain.User;
+import com.ecommerce.template.user.exception.UserNotFoundException;
 import lombok.*;
 
 @Getter
@@ -17,6 +18,10 @@ public class UserCreateResponse {
     private String name;
 
     public static UserCreateResponse from(User user) {
+        if (user == null) {
+            throw new UserNotFoundException();
+        }
+
         return UserCreateResponse.builder()
                 .seq(user.getSeq())
                 .id(user.getId())
