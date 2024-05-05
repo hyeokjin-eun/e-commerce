@@ -10,7 +10,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
@@ -23,16 +25,18 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDateTime;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(controllers = UserController.class, excludeFilters = {
-        @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = SecurityConfig.class),
-        @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebConfig.class)
+@WebMvcTest(
+        controllers = UserController.class,
+        excludeAutoConfiguration = SecurityAutoConfiguration.class,
+        excludeFilters = {
+            @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = SecurityConfig.class)
 })
-@ExtendWith(SpringExtension.class)
 @DisplayName("사용자_API_테스트")
 public class UserControllerTest extends CommonApiTestConfig {
 
@@ -63,7 +67,7 @@ public class UserControllerTest extends CommonApiTestConfig {
                 .createTime(current)
                 .build();
 
-        given(userFacade.create(userCreateRequest.toDomain())).willReturn(user);
+        given(userFacade.create(any())).willReturn(user);
 
         // when, then
         mockMvc.perform(post("/api/users")
@@ -89,7 +93,7 @@ public class UserControllerTest extends CommonApiTestConfig {
                 .name("tester")
                 .build();
 
-        given(userFacade.create(userCreateRequest.toDomain())).willReturn(null);
+        given(userFacade.create(any())).willReturn(null);
 
         // when, then
         mockMvc.perform(post("/api/users")
