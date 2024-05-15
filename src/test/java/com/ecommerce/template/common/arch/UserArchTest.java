@@ -34,7 +34,6 @@ public class UserArchTest {
 
     @Test
     public void 레이어드_아키텍처_테스트() {
-        List<JavaClass> list = new ArrayList<>();
         Architectures.LayeredArchitecture layeredArchitecture = layeredArchitecture()
             .consideringAllDependencies()
             .layer("Controller").definedBy("..controller..")
@@ -48,14 +47,14 @@ public class UserArchTest {
             .layer("Repository").definedBy("..repository..")
             .whereLayer("Repository").mayOnlyBeAccessedByLayers("Adapter")
             .layer("Dto").definedBy(new DescribedPredicate<>("All dto except common dto") {
-                    @Override
-                    public boolean test(JavaClass javaClass) {
-                        return !javaClass.getPackageName().contains("com.ecommerce.template.common")
-                                && javaClass.getPackageName().contains("dto")
-                                && javaClass.getName().contains("Builder");
-                    }
-                })
-            .whereLayer("Dto").mayOnlyBeAccessedByLayers("Controller");
+                @Override
+                public boolean test(JavaClass javaClass) {
+                    return !javaClass.getPackageName().contains("com.ecommerce.template.common")
+                            && javaClass.getPackageName().contains("dto");
+                }
+            })
+            .whereLayer("Dto").mayOnlyBeAccessedByLayers("Controller")
+            ;
 
 
         layeredArchitecture.check(classes);
