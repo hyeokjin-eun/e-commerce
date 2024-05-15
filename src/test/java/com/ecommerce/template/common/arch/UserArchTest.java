@@ -1,15 +1,20 @@
 package com.ecommerce.template.common.arch;
 
-import com.tngtech.archunit.core.domain.JavaClasses;
+import com.tngtech.archunit.base.DescribedPredicate;
+import com.tngtech.archunit.core.domain.*;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
 import com.tngtech.archunit.core.importer.ImportOption;
 import com.tngtech.archunit.lang.ArchRule;
+import com.tngtech.archunit.lang.syntax.ArchRuleDefinition;
 import com.tngtech.archunit.library.Architectures;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noFields;
 import static com.tngtech.archunit.library.Architectures.layeredArchitecture;
@@ -29,6 +34,7 @@ public class UserArchTest {
 
     @Test
     public void 레이어드_아키텍처_테스트() {
+        List<JavaClass> list = new ArrayList<>();
         Architectures.LayeredArchitecture layeredArchitecture = layeredArchitecture()
             .consideringAllDependencies()
             .layer("Controller").definedBy("..controller..")
@@ -40,7 +46,17 @@ public class UserArchTest {
             .layer("Adapter").definedBy("..adapter..")
             .whereLayer("Adapter").mayOnlyBeAccessedByLayers("Service")
             .layer("Repository").definedBy("..repository..")
-            .whereLayer("Repository").mayOnlyBeAccessedByLayers("Adapter");
+            .whereLayer("Repository").mayOnlyBeAccessedByLayers("Adapter")
+            .layer("Dto").definedBy(new DescribedPredicate<>("All dto except common dto") {
+                    @Override
+                    public boolean test(JavaClass javaClass) {
+                        return !javaClass.getPackageName().contains("com.ecommerce.template.common")
+                                && javaClass.getPackageName().contains("dto")
+                                && javaClass.getName().contains("Builder");
+                    }
+                })
+            .whereLayer("Dto").mayOnlyBeAccessedByLayers("Controller");
+
 
         layeredArchitecture.check(classes);
     }
@@ -49,6 +65,32 @@ public class UserArchTest {
     public void Autowird_주입_여부_테스트() {
         ArchRule archRule = noFields()
                 .should().beAnnotatedWith(Autowired.class);
+
+        archRule.check(classes);
+    }
+
+    @Test
+    public void Dto_레이어의_빌더를_제외한_모든_생성자는_private_해야한다() {
+        ArchRule archRule = ArchRuleDefinition.classes()
+                .that()
+                .resideInAPackage("com.ecommerce.template.*.dto..")
+                .and()
+                .haveSimpleNameNotEndingWith("Builder")
+                .should()
+                .haveOnlyPrivateConstructors();
+
+        archRule.check(classes);
+    }
+
+    @Test
+    public void Domain_레이어의_빌더를_제외한_모든_생성자는_private_해야한다() {
+        ArchRule archRule = ArchRuleDefinition.classes()
+                .that()
+                .resideInAPackage("com.ecommerce.template.*.domain..")
+                .and()
+                .haveSimpleNameNotEndingWith("Builder")
+                .should()
+                .haveOnlyPrivateConstructors();
 
         archRule.check(classes);
     }

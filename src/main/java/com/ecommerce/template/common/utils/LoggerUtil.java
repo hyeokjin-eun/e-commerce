@@ -2,5 +2,11 @@ package com.ecommerce.template.common.utils;
 
 public interface LoggerUtil {
 
-    void printError(Exception exception);
+    void error(Exception exception);
+
+    void info(String message);
+
+    void warn(String message);
+
+    void debug(String message);
 }

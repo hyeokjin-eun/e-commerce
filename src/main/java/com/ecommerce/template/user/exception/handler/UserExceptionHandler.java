@@ -20,7 +20,7 @@ public class UserExceptionHandler {
 
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<ResponseDto<Object>> handleUserNotFoundException(UserNotFoundException exception) {
-        loggerUtil.printError(exception);
+        loggerUtil.error(exception);
         return ResponseDto.error(ResponseCode.USER_NOT_FOUND);
     }
 }

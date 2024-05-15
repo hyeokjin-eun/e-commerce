@@ -45,6 +45,10 @@ public class ResponseDto<T> {
         return success(null);
     }
 
+    public static <T> ResponseEntity<ResponseDto<T>> badRequest() {
+        return generate(ResponseCode.BAD_REQUEST, null);
+    }
+
     public static <T> ResponseEntity<ResponseDto<T>> error() {
         return generate(ResponseCode.ERROR, null);
     }

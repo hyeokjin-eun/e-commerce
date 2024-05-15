@@ -9,7 +9,22 @@ import org.springframework.stereotype.Component;
 public class DefaultLoggerUtil implements LoggerUtil {
 
     @Override
-    public void printError(Exception exception) {
+    public void error(Exception exception) {
         log.error(exception.getMessage());
+    }
+
+    @Override
+    public void info(String message) {
+        log.info(message);
+    }
+
+    @Override
+    public void warn(String message) {
+        log.warn(message);
+    }
+
+    @Override
+    public void debug(String message) {
+        log.debug(message);
     }
 }

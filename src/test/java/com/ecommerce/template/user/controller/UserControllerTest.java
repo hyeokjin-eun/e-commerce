@@ -98,6 +98,63 @@ public class UserControllerTest extends CommonApiTestConfig {
         }
 
         @Test
+        public void 사용자_ID가_없을경우_400_상태를_반환한다() throws Exception {
+            // given
+            UserCreateRequest userCreateRequest = UserCreateRequest.builder()
+                    .id(null)
+                    .password("test")
+                    .name("tester")
+                    .build();
+
+            // when, then
+            mockMvc.perform(post("/api/users")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .accept(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(userCreateRequest)))
+                    .andExpect(status().isBadRequest())
+                    .andExpect(jsonPath("$.code").value(ResponseCode.BAD_REQUEST.getCode()))
+                    .andExpect(jsonPath("$.message").value(ResponseCode.BAD_REQUEST.getMessage()));
+        }
+
+        @Test
+        public void 사용자_Password가_없을경우_400_상태를_반환한다() throws Exception {
+            // given
+            UserCreateRequest userCreateRequest = UserCreateRequest.builder()
+                    .id("test")
+                    .password(null)
+                    .name("tester")
+                    .build();
+
+            // when, then
+            mockMvc.perform(post("/api/users")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .accept(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(userCreateRequest)))
+                    .andExpect(status().isBadRequest())
+                    .andExpect(jsonPath("$.code").value(ResponseCode.BAD_REQUEST.getCode()))
+                    .andExpect(jsonPath("$.message").value(ResponseCode.BAD_REQUEST.getMessage()));
+        }
+
+        @Test
+        public void 사용자_name이_없을경우_400_상태를_반환한다() throws Exception {
+            // given
+            UserCreateRequest userCreateRequest = UserCreateRequest.builder()
+                    .id("test")
+                    .password("test")
+                    .name(null)
+                    .build();
+
+            // when, then
+            mockMvc.perform(post("/api/users")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .accept(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(userCreateRequest)))
+                    .andExpect(status().isBadRequest())
+                    .andExpect(jsonPath("$.code").value(ResponseCode.BAD_REQUEST.getCode()))
+                    .andExpect(jsonPath("$.message").value(ResponseCode.BAD_REQUEST.getMessage()));
+        }
+
+        @Test
         public void 사용자_정보가_없어서_응답_모델_생성에_실패하면_404_상태를_반환한다() throws Exception {
             // given
             UserCreateRequest userCreateRequest = UserCreateRequest.builder()

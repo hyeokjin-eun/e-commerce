@@ -1,19 +1,15 @@
 package com.ecommerce.template.user.dto.response;
 
 import com.ecommerce.template.user.domain.User;
-import com.ecommerce.template.user.domain.UserSearch;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Getter
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class UserSearchDetailResponse {
 
     @NotNull
