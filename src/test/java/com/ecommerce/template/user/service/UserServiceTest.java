@@ -1,7 +1,10 @@
 package com.ecommerce.template.user.service;
 
+import com.ecommerce.template.common.utils.PasswordUtil;
+import com.ecommerce.template.common.utils.TimeUtil;
 import com.ecommerce.template.user.adapter.UserAdapter;
 import com.ecommerce.template.user.domain.User;
+import com.ecommerce.template.user.domain.UserCreate;
 import com.ecommerce.template.user.service.impl.UserServiceImpl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,6 +15,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
@@ -21,23 +26,30 @@ public class UserServiceTest {
     @Mock
     private UserAdapter userAdapter;
 
+    @Mock
+    private PasswordUtil passwordUtil;
+
+    @Mock
+    private TimeUtil timeUtil;
+
     @InjectMocks
     private UserServiceImpl userService;
 
     @Test
     public void User객체를_사용해_사용자를_생성한다() {
         // given
-        User user = User.builder()
+        UserCreate userCreate = UserCreate.builder()
                 .id("test")
                 .password("123456")
                 .name("tester")
-                .createTime(LocalDateTime.now())
                 .build();
 
         // when
-        userService.create(user);
+        userService.create(userCreate);
 
         // then
-        verify(userAdapter).save(user);
+        verify(passwordUtil).encode(anyString());
+        verify(timeUtil).getCurrentTime();
+        verify(userAdapter).save(any(User.class));
     }
 }

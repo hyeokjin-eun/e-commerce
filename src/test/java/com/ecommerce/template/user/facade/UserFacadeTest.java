@@ -2,6 +2,7 @@ package com.ecommerce.template.user.facade;
 
 import com.ecommerce.template.common.utils.PasswordUtil;
 import com.ecommerce.template.common.utils.TimeUtil;
+import com.ecommerce.template.user.domain.UserSearch;
 import com.ecommerce.template.user.facade.impl.UserFacadeImpl;
 import com.ecommerce.template.user.domain.UserCreate;
 import com.ecommerce.template.user.service.UserService;
@@ -45,8 +46,14 @@ public class UserFacadeTest {
         userFacade.create(userCreate);
 
         // then
-        verify(passwordUtil).encode(anyString());
-        verify(timeUtil).getCurrentTime();
         verify(userService).create(any());
+    }
+
+    @Test
+    public void 사용자를_검색한다() throws Exception {
+        // given
+        UserSearch userSearch = UserSearch.builder()
+                .id("test")
+                .build();
     }
 }

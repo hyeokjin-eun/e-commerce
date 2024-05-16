@@ -1,26 +1,16 @@
 package com.ecommerce.template.user.controller.userController;
 
-import com.ecommerce.template.common.config.ApiTestConfig;
 import com.ecommerce.template.common.enums.ResponseCode;
 import com.ecommerce.template.common.utils.TimeUtil;
-import com.ecommerce.template.user.controller.UserController;
 import com.ecommerce.template.user.domain.User;
 import com.ecommerce.template.user.dto.request.UserCreateRequest;
 import com.ecommerce.template.user.exception.UserNotFoundException;
 import com.ecommerce.template.user.facade.UserFacade;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.FilterType;
 import org.springframework.http.MediaType;
-import org.springframework.security.access.SecurityConfig;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDateTime;
@@ -32,6 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @DisplayName("사용자_생성_API_테스트")
+@TestClassOrder(ClassOrderer.OrderAnnotation.class)
 public class UserCreateTest extends UserControllerTest {
 
     @Autowired
@@ -48,6 +39,7 @@ public class UserCreateTest extends UserControllerTest {
 
     @Nested
     @DisplayName("성공(201)")
+    @Order(1)
     class Status201 {
 
         @Test
@@ -86,9 +78,11 @@ public class UserCreateTest extends UserControllerTest {
 
     @Nested
     @DisplayName("실패(400)")
+    @Order(2)
     class Status400 {
+
         @Test
-        public void 사용자_ID가_없을경우_400_상태를_반환한다() throws Exception {
+        public void 사용자_Id가_없을경우_400_상태를_반환한다() throws Exception {
             // given
             UserCreateRequest userCreateRequest = UserCreateRequest.builder()
                     .id(null)
@@ -126,7 +120,7 @@ public class UserCreateTest extends UserControllerTest {
         }
 
         @Test
-        public void 사용자_name이_없을경우_400_상태를_반환한다() throws Exception {
+        public void 사용자_Name이_없을경우_400_상태를_반환한다() throws Exception {
             // given
             UserCreateRequest userCreateRequest = UserCreateRequest.builder()
                     .id("test")
@@ -147,6 +141,7 @@ public class UserCreateTest extends UserControllerTest {
 
     @Nested
     @DisplayName("실패(404)")
+    @Order(3)
     class Status404 {
         @Test
         public void 사용자_정보가_없어서_응답_모델_생성에_실패하면_404_상태를_반환한다() throws Exception {
@@ -193,7 +188,9 @@ public class UserCreateTest extends UserControllerTest {
 
     @Nested
     @DisplayName("실패(500)")
+    @Order(4)
     class Status500 {
+
         @Test
         public void 사용자를_생성하던_중에_런타임_오류가_발생하면_500_상태를_반환한다() throws Exception {
             // given
