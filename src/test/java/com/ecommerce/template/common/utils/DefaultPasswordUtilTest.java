@@ -24,7 +24,7 @@ public class DefaultPasswordUtilTest {
     }
 
     @Test
-    public void 주입된_Encoder에_따라서_비밀번호를_Encoding한다() {
+    public void 주입된_인코더에_따라서_비밀번호를_인코딩한다() {
         // given
         String password = "123456";
 

@@ -1,7 +1,5 @@
 package com.ecommerce.template.user.facade;
 
-import com.ecommerce.template.common.utils.PasswordUtil;
-import com.ecommerce.template.common.utils.TimeUtil;
 import com.ecommerce.template.user.domain.UserSearch;
 import com.ecommerce.template.user.facade.impl.UserFacadeImpl;
 import com.ecommerce.template.user.domain.UserCreate;
@@ -13,8 +11,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDate;
+
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
@@ -23,12 +22,6 @@ public class UserFacadeTest {
 
     @Mock
     private UserService userService;
-
-    @Mock
-    private PasswordUtil passwordUtil;
-
-    @Mock
-    private TimeUtil timeUtil;
 
     @InjectMocks
     private UserFacadeImpl userFacade;
@@ -53,7 +46,18 @@ public class UserFacadeTest {
     public void 사용자를_검색한다() throws Exception {
         // given
         UserSearch userSearch = UserSearch.builder()
+                .page(0)
+                .size(30)
                 .id("test")
+                .name("tester")
+                .createdStartDate(LocalDate.of(2024, 5, 20))
+                .createdEndDate(LocalDate.of(2024, 5, 24))
                 .build();
+
+        // when
+        userFacade.search(userSearch);
+
+        // then
+        verify(userService).search(userSearch);
     }
 }

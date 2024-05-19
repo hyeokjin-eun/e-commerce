@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
 import java.time.LocalDateTime;
 
@@ -67,6 +68,7 @@ public class UserCreateTest extends UserControllerTest {
                             .contentType(MediaType.APPLICATION_JSON)
                             .accept(MediaType.APPLICATION_JSON)
                             .content(objectMapper.writeValueAsString(userCreateRequest)))
+                    .andDo(MockMvcResultHandlers.print())
                     .andExpect(status().isCreated())
                     .andExpect(jsonPath("$.code").value(ResponseCode.CREATED.getCode()))
                     .andExpect(jsonPath("$.message").value(ResponseCode.CREATED.getMessage()))
@@ -95,6 +97,7 @@ public class UserCreateTest extends UserControllerTest {
                             .contentType(MediaType.APPLICATION_JSON)
                             .accept(MediaType.APPLICATION_JSON)
                             .content(objectMapper.writeValueAsString(userCreateRequest)))
+                    .andDo(MockMvcResultHandlers.print())
                     .andExpect(status().isBadRequest())
                     .andExpect(jsonPath("$.code").value(ResponseCode.BAD_REQUEST.getCode()))
                     .andExpect(jsonPath("$.message").value(ResponseCode.BAD_REQUEST.getMessage()));
@@ -114,6 +117,7 @@ public class UserCreateTest extends UserControllerTest {
                             .contentType(MediaType.APPLICATION_JSON)
                             .accept(MediaType.APPLICATION_JSON)
                             .content(objectMapper.writeValueAsString(userCreateRequest)))
+                    .andDo(MockMvcResultHandlers.print())
                     .andExpect(status().isBadRequest())
                     .andExpect(jsonPath("$.code").value(ResponseCode.BAD_REQUEST.getCode()))
                     .andExpect(jsonPath("$.message").value(ResponseCode.BAD_REQUEST.getMessage()));
@@ -133,6 +137,7 @@ public class UserCreateTest extends UserControllerTest {
                             .contentType(MediaType.APPLICATION_JSON)
                             .accept(MediaType.APPLICATION_JSON)
                             .content(objectMapper.writeValueAsString(userCreateRequest)))
+                    .andDo(MockMvcResultHandlers.print())
                     .andExpect(status().isBadRequest())
                     .andExpect(jsonPath("$.code").value(ResponseCode.BAD_REQUEST.getCode()))
                     .andExpect(jsonPath("$.message").value(ResponseCode.BAD_REQUEST.getMessage()));
@@ -159,6 +164,7 @@ public class UserCreateTest extends UserControllerTest {
                             .contentType(MediaType.APPLICATION_JSON)
                             .accept(MediaType.APPLICATION_JSON)
                             .content(objectMapper.writeValueAsString(userCreateRequest)))
+                    .andDo(MockMvcResultHandlers.print())
                     .andExpect(status().isNotFound())
                     .andExpect(jsonPath("$.code").value(ResponseCode.USER_NOT_FOUND.getCode()))
                     .andExpect(jsonPath("$.message").value(ResponseCode.USER_NOT_FOUND.getMessage()));
@@ -180,6 +186,7 @@ public class UserCreateTest extends UserControllerTest {
                             .contentType(MediaType.APPLICATION_JSON)
                             .accept(MediaType.APPLICATION_JSON)
                             .content(objectMapper.writeValueAsString(userCreateRequest)))
+                    .andDo(MockMvcResultHandlers.print())
                     .andExpect(status().isNotFound())
                     .andExpect(jsonPath("$.code").value(ResponseCode.USER_NOT_FOUND.getCode()))
                     .andExpect(jsonPath("$.message").value(ResponseCode.USER_NOT_FOUND.getMessage()));
@@ -207,6 +214,7 @@ public class UserCreateTest extends UserControllerTest {
                             .contentType(MediaType.APPLICATION_JSON)
                             .accept(MediaType.APPLICATION_JSON)
                             .content(objectMapper.writeValueAsString(userCreateRequest)))
+                    .andDo(MockMvcResultHandlers.print())
                     .andExpect(status().isInternalServerError())
                     .andExpect(jsonPath("$.code").value(ResponseCode.ERROR.getCode()))
                     .andExpect(jsonPath("$.message").value(ResponseCode.ERROR.getMessage()));
@@ -228,6 +236,7 @@ public class UserCreateTest extends UserControllerTest {
                             .contentType(MediaType.APPLICATION_JSON)
                             .accept(MediaType.APPLICATION_JSON)
                             .content(objectMapper.writeValueAsString(userCreateRequest)))
+                    .andDo(MockMvcResultHandlers.print())
                     .andExpect(status().isInternalServerError())
                     .andExpect(jsonPath("$.code").value(ResponseCode.ERROR.getCode()))
                     .andExpect(jsonPath("$.message").value(ResponseCode.ERROR.getMessage()));

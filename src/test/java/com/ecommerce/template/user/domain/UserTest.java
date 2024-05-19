@@ -36,7 +36,7 @@ public class UserTest {
     }
 
     @Test
-    public void UserCreate객체로_User를_생성한다() {
+    public void 사용자_생성_객체로_사용자를_생성한다() {
         // given
         UserCreate userCreate = UserCreate.builder()
                 .id("test")

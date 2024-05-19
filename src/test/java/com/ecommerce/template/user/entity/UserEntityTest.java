@@ -12,7 +12,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class UserEntityTest {
 
     @Test
-    public void User를_UserEntity로_변환한다() {
+    public void 사용자로_사용자_엔티티로_변환한다() {
         LocalDateTime current = LocalDateTime.now();
         User user = User.builder()
                 .seq(1L)

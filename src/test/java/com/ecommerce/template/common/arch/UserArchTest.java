@@ -33,7 +33,7 @@ public class UserArchTest {
     }
 
     @Test
-    public void 레이어드_아키텍처_테스트() {
+    public void 각_레이어_계층은_허용된_계층외에는_접근할_수_없다() {
         Architectures.LayeredArchitecture layeredArchitecture = layeredArchitecture()
             .consideringAllDependencies()
             .layer("Controller").definedBy("..controller..")
@@ -61,7 +61,7 @@ public class UserArchTest {
     }
 
     @Test
-    public void Autowird_주입_여부_테스트() {
+    public void Autowird_어노테이션은_사용하지_않는다() {
         ArchRule archRule = noFields()
                 .should().beAnnotatedWith(Autowired.class);
 
@@ -69,7 +69,7 @@ public class UserArchTest {
     }
 
     @Test
-    public void Dto_레이어의_빌더를_제외한_모든_생성자는_private_해야한다() {
+    public void DTO_레이어의_빌더를_제외한_모든_생성자는_private_해야한다() {
         ArchRule archRule = ArchRuleDefinition.classes()
                 .that()
                 .resideInAPackage("com.ecommerce.template.*.dto..")
@@ -82,7 +82,7 @@ public class UserArchTest {
     }
 
     @Test
-    public void Domain_레이어의_빌더를_제외한_모든_생성자는_private_해야한다() {
+    public void 도메인_레이어의_빌더를_제외한_모든_생성자는_private_해야한다() {
         ArchRule archRule = ArchRuleDefinition.classes()
                 .that()
                 .resideInAPackage("com.ecommerce.template.*.domain..")

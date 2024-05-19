@@ -19,5 +19,7 @@ public class UserSearch {
 
     private LocalDate createdEndDate;
 
-    private List<User> list;
+    private Integer page;
+
+    private Integer size;
 }

@@ -5,6 +5,7 @@ import com.ecommerce.template.common.utils.TimeUtil;
 import com.ecommerce.template.user.adapter.UserAdapter;
 import com.ecommerce.template.user.domain.User;
 import com.ecommerce.template.user.domain.UserCreate;
+import com.ecommerce.template.user.domain.UserSearch;
 import com.ecommerce.template.user.service.impl.UserServiceImpl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,6 +14,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -36,7 +38,7 @@ public class UserServiceTest {
     private UserServiceImpl userService;
 
     @Test
-    public void User객체를_사용해_사용자를_생성한다() {
+    public void 사용자_생성_객체를_사용해_사용자를_생성한다() {
         // given
         UserCreate userCreate = UserCreate.builder()
                 .id("test")
@@ -51,5 +53,24 @@ public class UserServiceTest {
         verify(passwordUtil).encode(anyString());
         verify(timeUtil).getCurrentTime();
         verify(userAdapter).save(any(User.class));
+    }
+
+    @Test
+    public void 사용자_검색_객체를_사용해_사용자를_검색한다() {
+        // given
+        UserSearch userSearch = UserSearch.builder()
+                .page(0)
+                .size(30)
+                .id("test")
+                .name("tester")
+                .createdStartDate(LocalDate.of(2024, 5, 20))
+                .createdEndDate(LocalDate.of(2024, 5, 24))
+                .build();
+
+        // when
+        userService.search(userSearch);
+
+        // then
+        verify(userAdapter).findByUserSearch(userSearch);
     }
 }

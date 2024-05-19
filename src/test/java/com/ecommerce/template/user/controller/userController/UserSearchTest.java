@@ -1,24 +1,17 @@
 package com.ecommerce.template.user.controller.userController;
 
-import com.ecommerce.template.common.config.ApiTestConfig;
 import com.ecommerce.template.common.enums.ResponseCode;
+import com.ecommerce.template.common.model.Paging;
 import com.ecommerce.template.common.utils.TimeUtil;
-import com.ecommerce.template.user.controller.UserController;
 import com.ecommerce.template.user.domain.User;
-import com.ecommerce.template.user.domain.UserSearch;
 import com.ecommerce.template.user.facade.UserFacade;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.FilterType;
-import org.springframework.core.Ordered;
 import org.springframework.http.MediaType;
-import org.springframework.security.access.SecurityConfig;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
@@ -62,7 +55,7 @@ public class UserSearchTest extends UserControllerTest {
             List<User> userList = new ArrayList<>();
             for (int i = 0; i < 10; i++) {
                 User user = User.builder()
-                        .seq(Long.parseLong(String.valueOf(i)))
+                        .seq(Long.valueOf(String.valueOf(i)))
                         .id("test" + i)
                         .name("tester" + i)
                         .createTime(baseDate.plusDays(i).atStartOfDay())
@@ -71,15 +64,9 @@ public class UserSearchTest extends UserControllerTest {
                 userList.add(user);
             }
 
-            UserSearch userSearch = UserSearch.builder()
-                    .id(id)
-                    .name(name)
-                    .createdStartDate(createdStartDate)
-                    .createdEndDate(createdEndDate)
-                    .list(userList)
-                    .build();
+            Paging<User> paging = Paging.create(0, 10, 10L, userList);
 
-            given(userFacade.search(any())).willReturn(userSearch);
+            given(userFacade.search(any())).willReturn(paging);
 
             MultiValueMap<String, String> multiValueMap = new LinkedMultiValueMap<>();
             multiValueMap.add("id", id);
@@ -92,9 +79,15 @@ public class UserSearchTest extends UserControllerTest {
                             .contentType(MediaType.APPLICATION_JSON)
                             .accept(MediaType.APPLICATION_JSON)
                             .params(multiValueMap))
+                    .andDo(MockMvcResultHandlers.print())
                     .andExpect(status().isOk())
                     .andExpect(jsonPath("$.code").value(ResponseCode.SUCCESS.getCode()))
-                    .andExpect(jsonPath("$.message").value(ResponseCode.SUCCESS.getMessage()));
+                    .andExpect(jsonPath("$.message").value(ResponseCode.SUCCESS.getMessage()))
+                    .andExpect(jsonPath("$.data.list").isArray())
+                    .andExpect(jsonPath("$.data.list.size()").value(10))
+                    .andExpect(jsonPath("$.data.list[*].seq").value(Matchers.everyItem(Matchers.notNullValue())))
+                    .andExpect(jsonPath("$.data.list[*].name").value(Matchers.everyItem(Matchers.notNullValue())))
+                    ;
         }
     }
 
@@ -122,6 +115,7 @@ public class UserSearchTest extends UserControllerTest {
                             .contentType(MediaType.APPLICATION_JSON)
                             .accept(MediaType.APPLICATION_JSON)
                             .params(multiValueMap))
+                    .andDo(MockMvcResultHandlers.print())
                     .andExpect(status().isBadRequest())
                     .andExpect(jsonPath("$.code").value(ResponseCode.BAD_REQUEST.getCode()))
                     .andExpect(jsonPath("$.message").value(ResponseCode.BAD_REQUEST.getMessage()));
@@ -146,6 +140,7 @@ public class UserSearchTest extends UserControllerTest {
                             .contentType(MediaType.APPLICATION_JSON)
                             .accept(MediaType.APPLICATION_JSON)
                             .params(multiValueMap))
+                    .andDo(MockMvcResultHandlers.print())
                     .andExpect(status().isBadRequest())
                     .andExpect(jsonPath("$.code").value(ResponseCode.BAD_REQUEST.getCode()))
                     .andExpect(jsonPath("$.message").value(ResponseCode.BAD_REQUEST.getMessage()));
@@ -178,6 +173,7 @@ public class UserSearchTest extends UserControllerTest {
                             .contentType(MediaType.APPLICATION_JSON)
                             .accept(MediaType.APPLICATION_JSON)
                             .params(multiValueMap))
+                    .andDo(MockMvcResultHandlers.print())
                     .andExpect(status().isInternalServerError())
                     .andExpect(jsonPath("$.code").value(ResponseCode.ERROR.getCode()))
                     .andExpect(jsonPath("$.message").value(ResponseCode.ERROR.getMessage()));
@@ -204,6 +200,7 @@ public class UserSearchTest extends UserControllerTest {
                             .contentType(MediaType.APPLICATION_JSON)
                             .accept(MediaType.APPLICATION_JSON)
                             .params(multiValueMap))
+                    .andDo(MockMvcResultHandlers.print())
                     .andExpect(status().isInternalServerError())
                     .andExpect(jsonPath("$.code").value(ResponseCode.ERROR.getCode()))
                     .andExpect(jsonPath("$.message").value(ResponseCode.ERROR.getMessage()));

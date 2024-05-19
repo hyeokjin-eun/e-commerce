@@ -1,5 +1,6 @@
 package com.ecommerce.template.user.facade.impl;
 
+import com.ecommerce.template.common.model.Paging;
 import com.ecommerce.template.user.domain.UserSearch;
 import com.ecommerce.template.user.facade.UserFacade;
 import com.ecommerce.template.user.domain.User;
@@ -20,7 +21,7 @@ public class UserFacadeImpl implements UserFacade {
     }
 
     @Override
-    public UserSearch search(UserSearch userSearch) throws Exception {
-        return null;
+    public Paging<User> search(UserSearch userSearch) throws Exception {
+        return userService.search(userSearch);
     }
 }
