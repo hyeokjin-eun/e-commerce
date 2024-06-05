@@ -22,9 +22,4 @@ public class DefaultLoggerUtil implements LoggerUtil {
     public void warn(String message) {
         log.warn(message);
     }
-
-    @Override
-    public void debug(String message) {
-        log.debug(message);
-    }
 }

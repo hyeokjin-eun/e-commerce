@@ -73,4 +73,16 @@ public class UserServiceTest {
         // then
         verify(userAdapter).findByUserSearch(userSearch);
     }
+
+    @Test
+    public void 사용자_SEQ_를_사용해_사용자_상세_정보를_조회한다() {
+        // given
+        Long seq = 1L;
+
+        // when
+        userService.detail(seq);
+
+        // then
+        verify(userAdapter).findBySeq(seq);
+    }
 }

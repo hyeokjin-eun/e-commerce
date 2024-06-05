@@ -8,12 +8,19 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 @RestControllerAdvice
 @RequiredArgsConstructor
 public class DefaultExceptionHandler {
 
     private final LoggerUtil loggerUtil;
+
+    @ExceptionHandler(NoResourceFoundException.class)
+    public ResponseEntity<ResponseDto<Object>> handleNoResourceFoundException(NoResourceFoundException exception) {
+        loggerUtil.error(exception);
+        return ResponseDto.notFound();
+    }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ResponseDto<Object>> handleMethodArgumentNotValidException(MethodArgumentNotValidException exception) {

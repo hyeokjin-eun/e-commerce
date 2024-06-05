@@ -11,4 +11,6 @@ public interface UserFacade {
     User create(UserCreate userCreate) throws Exception;
 
     Paging<User> search(UserSearch userSearch) throws Exception;
+
+    User detail(Long seq) throws Exception;
 }

@@ -56,4 +56,8 @@ public class ResponseDto<T> {
     public static <T> ResponseEntity<ResponseDto<T>> error(ResponseCode responseCode) {
         return generate(responseCode, null);
     }
+
+    public static <T> ResponseEntity<ResponseDto<T>> notFound() {
+        return generate(ResponseCode.NOT_FOUND, null);
+    }
 }

@@ -21,7 +21,12 @@ public class UserFacadeImpl implements UserFacade {
     }
 
     @Override
-    public Paging<User> search(UserSearch userSearch) throws Exception {
+    public Paging<User> search(UserSearch userSearch) {
         return userService.search(userSearch);
+    }
+
+    @Override
+    public User detail(Long seq) {
+        return userService.detail(seq);
     }
 }

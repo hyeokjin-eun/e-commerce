@@ -4,6 +4,7 @@ import com.ecommerce.template.user.domain.User;
 import com.ecommerce.template.user.domain.UserCreate;
 import com.ecommerce.template.user.dto.request.UserCreateRequest;
 import com.ecommerce.template.user.dto.response.UserCreateResponse;
+import com.ecommerce.template.user.exception.UserNotFoundException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -11,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @DisplayName("사용자_생성_객체_테스트")
 public class UserCreateDtoTest {
@@ -98,6 +100,12 @@ public class UserCreateDtoTest {
             assertThat(userCreateResponse.getSeq()).isEqualTo(user.getSeq());
             assertThat(userCreateResponse.getId()).isEqualTo(user.getId());
             assertThat(userCreateResponse.getName()).isEqualTo(user.getName());
+        }
+
+        @Test
+        public void 도메인이_없이_사용자_생성_응답_객체를_생성하려고하면_에러가_발생한다() {
+            // when, then
+            assertThrows(UserNotFoundException.class, () -> UserCreateResponse.from(null));
         }
     }
 }

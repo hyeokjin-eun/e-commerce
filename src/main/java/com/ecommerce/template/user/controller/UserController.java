@@ -4,6 +4,7 @@ import com.ecommerce.template.common.dto.ResponseDto;
 import com.ecommerce.template.user.dto.request.UserCreateRequest;
 import com.ecommerce.template.user.dto.request.UserSearchRequest;
 import com.ecommerce.template.user.dto.response.UserCreateResponse;
+import com.ecommerce.template.user.dto.response.UserDetailResponse;
 import com.ecommerce.template.user.dto.response.UserSearchResponse;
 import com.ecommerce.template.user.facade.UserFacade;
 import jakarta.validation.Valid;
@@ -26,5 +27,10 @@ public class UserController {
     @GetMapping
     public ResponseEntity<ResponseDto<UserSearchResponse>> search(UserSearchRequest userSearchRequest) throws Exception {
         return ResponseDto.success(UserSearchResponse.from(userFacade.search(userSearchRequest.toDomain())));
+    }
+
+    @GetMapping("{seq}")
+    public ResponseEntity<ResponseDto<UserDetailResponse>> details(@PathVariable Long seq) throws Exception {
+        return ResponseDto.success(UserDetailResponse.from(userFacade.detail(seq)));
     }
 }

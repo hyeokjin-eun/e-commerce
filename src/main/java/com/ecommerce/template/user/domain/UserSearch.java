@@ -3,7 +3,6 @@ package com.ecommerce.template.user.domain;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Getter
 @Builder

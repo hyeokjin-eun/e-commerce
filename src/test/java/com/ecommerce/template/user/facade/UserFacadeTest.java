@@ -43,7 +43,7 @@ public class UserFacadeTest {
     }
 
     @Test
-    public void 사용자를_검색한다() throws Exception {
+    public void 사용자를_검색한다() {
         // given
         UserSearch userSearch = UserSearch.builder()
                 .page(0)
@@ -59,5 +59,17 @@ public class UserFacadeTest {
 
         // then
         verify(userService).search(userSearch);
+    }
+
+    @Test
+    public void 사용자_상세_정보를_조회한다() {
+        // given
+        Long seq = 1L;
+
+        // when
+        userFacade.detail(seq);
+
+        // then
+        verify(userService).detail(seq);
     }
 }

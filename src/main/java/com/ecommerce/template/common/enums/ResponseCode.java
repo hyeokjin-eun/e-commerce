@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 public enum ResponseCode {
     SUCCESS("S0200", "Success", HttpStatus.OK),
     CREATED("S0201", "Created", HttpStatus.CREATED),
+    NOT_FOUND("E0404", "Not Found", HttpStatus.NOT_FOUND),
     BAD_REQUEST("E0400", "Bad Request", HttpStatus.BAD_REQUEST),
     ERROR("E0500", "Error", HttpStatus.INTERNAL_SERVER_ERROR),
     USER_NOT_FOUND("E1404", "User Not Found", HttpStatus.NOT_FOUND),

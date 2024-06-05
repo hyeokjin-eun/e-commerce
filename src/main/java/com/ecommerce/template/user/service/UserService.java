@@ -10,4 +10,6 @@ public interface UserService {
     User create(UserCreate userCreate);
 
     Paging<User> search(UserSearch userSearch);
+
+    User detail(Long seq);
 }

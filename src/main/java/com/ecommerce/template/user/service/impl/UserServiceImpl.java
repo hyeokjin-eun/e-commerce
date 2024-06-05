@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService {
 
     private final UserAdapter userAdapter;
-    
+
     private final TimeUtil timeUtil;
 
     private final PasswordUtil passwordUtil;
@@ -30,5 +30,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public Paging<User> search(UserSearch userSearch) {
         return userAdapter.findByUserSearch(userSearch);
+    }
+
+    @Override
+    public User detail(Long seq) {
+        return userAdapter.findBySeq(seq);
     }
 }

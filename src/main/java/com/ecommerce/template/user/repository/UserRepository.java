@@ -7,9 +7,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
     Page<UserEntity> findByIdLikeAndNameLikeAndCreateTimeBetween(String id, String name, LocalDate startDate, LocalDate endDate, Pageable pageable);
+
+    Optional<UserEntity> findBySeq(Long seq);
 }

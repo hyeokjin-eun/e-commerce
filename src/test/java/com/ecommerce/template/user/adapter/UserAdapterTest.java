@@ -6,6 +6,7 @@ import com.ecommerce.template.user.domain.User;
 import com.ecommerce.template.user.domain.UserSearch;
 import com.ecommerce.template.user.entity.UserEntity;
 import com.ecommerce.template.user.entity.UserEntityTest;
+import com.ecommerce.template.user.exception.UserNotFoundException;
 import com.ecommerce.template.user.repository.UserRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -22,8 +23,10 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
@@ -128,4 +131,45 @@ public class UserAdapterTest {
             }
         }
     }
+
+    @Nested
+    @DisplayName("findBySeq_테스트")
+    class FindBySeq {
+
+        @Test
+        public void 사용자_SEQ_를_사용해_사용자_상세_정보를_조회한다() {
+            // given
+            Long seq = 1L;
+
+            Optional<UserEntity> userEntity = Optional.of(UserEntity.builder()
+                    .seq(1L)
+                    .id("test")
+                    .password("test")
+                    .name("tester")
+                    .createTime(LocalDateTime.now())
+                    .build());
+
+            given(userRepository.findBySeq(seq)).willReturn(userEntity);
+
+            // when
+            User user = userAdapter.findBySeq(seq);
+            assertThat(user.getSeq()).isEqualTo(userEntity.get().getSeq());
+            assertThat(user.getId()).isEqualTo(userEntity.get().getId());
+            assertThat(user.getPassword()).isEqualTo(userEntity.get().getPassword());
+            assertThat(user.getName()).isEqualTo(userEntity.get().getName());
+            assertThat(user.getCreateTime()).isEqualTo(userEntity.get().getCreateTime());
+        }
+        
+        @Test
+        public void 사용자_SEQ_를_사용해_사용자_조회_결과가_없다면_사용자를_못찾는다는_오류를_반환한다() {
+            // given
+            Long seq = 1L;
+
+            given(userRepository.findBySeq(seq)).willReturn(Optional.empty());
+
+            // when, then
+            assertThrows(UserNotFoundException.class, () -> userAdapter.findBySeq(seq));
+        }
+    }
+
 }

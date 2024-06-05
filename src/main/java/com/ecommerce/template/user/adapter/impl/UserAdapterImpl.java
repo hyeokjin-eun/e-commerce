@@ -5,6 +5,7 @@ import com.ecommerce.template.user.adapter.UserAdapter;
 import com.ecommerce.template.user.domain.User;
 import com.ecommerce.template.user.domain.UserSearch;
 import com.ecommerce.template.user.entity.UserEntity;
+import com.ecommerce.template.user.exception.UserNotFoundException;
 import com.ecommerce.template.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -41,5 +42,11 @@ public class UserAdapterImpl implements UserAdapter {
                         .map(UserEntity::toDomain)
                         .toList()
         );
+    }
+
+    @Override
+    public User findBySeq(Long seq) {
+        return userRepository.findBySeq(seq).orElseThrow(UserNotFoundException::new)
+                .toDomain();
     }
 }

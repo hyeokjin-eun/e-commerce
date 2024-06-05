@@ -9,4 +9,6 @@ public interface UserAdapter {
     User save(User user);
 
     Paging<User> findByUserSearch(UserSearch userSearch);
+
+    User findBySeq(Long seq);
 }

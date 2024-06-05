@@ -7,6 +7,4 @@ public interface LoggerUtil {
     void info(String message);
 
     void warn(String message);
-
-    void debug(String message);
 }
